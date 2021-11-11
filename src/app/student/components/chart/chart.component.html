@@ -1,0 +1,15 @@
+
+<mat-card>
+  <div class="chart-wrapper">
+    <div class="chart-wrapper__area">
+      <canvas
+        baseChart
+        height="250px"
+        width="0"
+        type="line"[datasets]="datasets"
+        [labels]="labels"
+        [legend]="false"
+        [options]="options"></canvas>
+    </div>
+  </div>
+</mat-card>

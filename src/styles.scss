@@ -1,1 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+@mixin media-medium-and-up {
+  @media only screen and (min-width: 960px) {
+    @content;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: Poppins, "Helvetica Neue", sans-serif !important;
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: #707070;
+}
+
+// resets
+table {
+  border-collapse: collapse;
+}
+
+// overrides
+h2 {
+  font-size: 22px !important;
+  font-weight: normal !important;
+  margin-bottom: 10px !important;
+}
+
+$color: #000000;
+.mat-card {
+  border-radius: 14px !important;
+  box-shadow: 0px 2px 4px -1px transparentize($color, 0.90),
+              0px 4px 5px 0px transparentize($color, 0.94),
+              0px 1px 10px 0px transparentize($color, 0.96) !important;
+}
+
+// utilities
+.c {
+  &-text--left {
+    text-align: left !important;
+  }
+}
+
+
+// For modules to work with the loader
+.student {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  margin: 0 auto 30px;
+
+  &__img {
+    width: 150px;
+    height: 140px;
+    border-radius: 10px;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  &__meta {
+    margin-top: .7rem;
+
+    .table {
+      margin: 0 auto;
+    }
+  }
+
+  @include media-medium-and-up {
+    flex-direction: row;
+    margin: 0 0 30px;
+
+    &__img {
+      margin: 0 1rem 0 0;
+    }
+
+    &__meta {
+      .table {
+        margin: 0;
+      }
+    }
+  }
+}

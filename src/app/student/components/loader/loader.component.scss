@@ -1,0 +1,43 @@
+.graph {
+  width: 100%;
+  height: 200px;
+}
+
+.loader {
+  background-color: #e9e9e9;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  animation: glow 1s ease-in-out infinite alternate;
+
+  &:nth-child(2n) {
+    animation-delay: 0.5s;
+  }
+
+  &--text {
+    @extend .loader;
+    width: 80px;
+    height: 14px;
+    border-radius: 100px;
+    margin-bottom: .5rem;
+
+    &.title {
+      width: 100px;
+      height: 24px;
+    }
+
+    &.long {
+      width: 200px;
+    }
+  }
+
+  &--box {
+    @extend .loader;
+  }
+}
+
+@keyframes glow {
+  to {
+    opacity: 0.4
+  }
+}

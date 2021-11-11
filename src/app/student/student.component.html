@@ -1,0 +1,124 @@
+<div *ngIf="!!exam; else loading" [@inOutAnimation]>
+  <section *ngIf="!!student" class="student">
+    <img class="student__img" [src]="student.photo" alt="">
+    <div class="student__meta">
+      <h2>{{ student.name }}</h2>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Adm No</td>
+            <td>{{ student.admNo }}</td>
+          </tr>
+          <tr>
+            <td>Class</td>
+            <td>2 East</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="trend">
+    <h2>Performance Trend</h2>
+    <app-chart [performanceData]="exam.student_performance_over_time"></app-chart>
+  </section>
+
+  <section class="exam">
+    <h2>{{ exam.exam_name }}</h2>
+
+    <div class="exam__top">
+      <div class="exam__info">
+        <table style="margin-bottom: 20px">
+          <thead>
+            <tr>
+              <th class="c-text--left">Rank In</th>
+              <th>Rank</th>
+              <th>Out Of</th>
+              <th>Deviation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!!streamInfo">
+              <td class="c-text--left">Stream</td>
+              <td>{{ streamInfo?.rank }}</td>
+              <td>{{ streamInfo?.outOf }}</td>
+              <td>
+                <app-deviation [deviation]="streamInfo.deviation"></app-deviation>
+              </td>
+            </tr>
+            <tr *ngIf="!!overallInfo">
+              <td class="c-text--left">Overall</td>
+              <td>{{ overallInfo?.rank }}</td>
+              <td>{{ overallInfo?.outOf }}</td>
+              <td>
+                <app-deviation [deviation]="overallInfo.deviation"></app-deviation>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <mat-card class="exam__performance-card grade-{{ getClassFromGrade(exam.mean_grade) }}">
+          <mat-card-content>
+            <div class="container">
+              <p>{{ exam.mean_grade }}</p>
+              <div class="meta">
+                <span>{{ exam.mean_marks.avg_score }} points</span>
+                <app-deviation [deviation]="exam.mean_marks.deviation"></app-deviation>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-card class="exam__remarks">
+        <mat-card-content>
+          <mat-card-title>Remarks</mat-card-title>
+
+          <h3>Class Teacher</h3>
+          <p>{{ exam.class_teachers_remarks }}</p>
+
+          <h3>Principal</h3>
+          <p>{{ exam.principals_remarks }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <section class="exam__subject-results">
+      <h3>Subject Performance</h3>
+      <table>
+        <thead>
+          <tr>
+            <th class="c-text--left">Subject</th>
+            <th>Score</th>
+            <th>Grade</th>
+            <th>Rank</th>
+            <th>Out Of</th>
+            <th>Deviation</th>
+            <th class="c-text--left">Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let subject of exam.subject_results; index as i">
+            <td class="c-text--left">{{ subject.subject_name }}</td>
+            <td>{{ subject.score }}</td>
+            <td>
+              <div class="grade grade-{{ getClassFromGrade(subject.grade) }}">
+                {{ subject.grade }}
+              </div>
+            </td>
+            <td>{{ subject.rank }}</td>
+            <td>{{ subject.rank_out_of }}</td>
+            <td>
+              <app-deviation [deviation]="subject.deviation"></app-deviation>
+            </td>
+            <td class="c-text--left">{{ subject.comment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+</div>
+
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

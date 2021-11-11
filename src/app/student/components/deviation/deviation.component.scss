@@ -1,0 +1,31 @@
+div {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin: 0 auto;
+
+  span {
+    transform: translateY(-2px);
+    font-weight: 400;
+  }
+
+  p {
+    margin: 0 0 0 .25rem;
+  }
+
+  span, p {
+    font-weight: 500;
+  }
+
+  &.red {
+    span, p {
+      color: #A71B1B;
+    }
+  }
+
+  &.green {
+    span, p {
+      color: #44A71B;
+    }
+  }
+}

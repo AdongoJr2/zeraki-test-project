@@ -1,0 +1,16 @@
+.mat-card {
+  box-shadow: none !important;
+  border: 1px solid #dadada;
+}
+
+.chart-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+
+  &__area {
+    width: 100%;
+    min-width: 700px;
+    height: 250px;
+  }
+}
