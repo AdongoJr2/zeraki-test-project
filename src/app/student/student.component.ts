@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { IStudent, IExam } from './interfaces'
 import { StudentService } from './services/student.service'
@@ -26,14 +27,22 @@ import { StudentService } from './services/student.service'
 
   ],
 })
-export class StudentComponent {
+export class StudentComponent implements OnInit, OnDestroy {
+  studentSub!: Subscription;
+  student$!: Observable<IExam>;
   exam?: IExam;
 
-  constructor(private studentsService: StudentService) {
-    this.studentsService.fetchExam()
+  constructor(private studentsService: StudentService) { }
+
+  ngOnInit() {
+    this.studentSub = this.studentsService.fetchExam()
       .subscribe((data) => {
-        this.exam = data
-      })
+        this.exam = data;
+      });
+  }
+
+  ngOnDestroy() {
+    this.studentSub.unsubscribe();
   }
 
   get student(): IStudent | undefined {
