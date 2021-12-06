@@ -11,11 +11,10 @@ export default class StudentState {
   constructor(
     private readonly _studentService: StudentService,
   ) {
-    this._studentService.retrieveStudent$()
+    this._studentService.retrieveStudent$
       .subscribe((student: Student) => {
         return this._student$.next(student);
       })
   }
-
 
 }
