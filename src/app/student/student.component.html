@@ -1,13 +1,13 @@
-<div *ngIf="!!exam; else loading" [@inOutAnimation]>
-  <section *ngIf="!!student" class="student">
-    <img class="student__img" [src]="student.photo" alt="">
+<div *ngIf="!!studentDetails; else loading" [@inOutAnimation]>
+  <section class="student">
+    <img class="student__img" [src]="studentDetails.imageURL" alt="">
     <div class="student__meta">
-      <h2>{{ student.name }}</h2>
+      <h2>{{ studentDetails.name }}</h2>
       <table class="table">
         <tbody>
           <tr>
             <td>Adm No</td>
-            <td>{{ student.admNo }}</td>
+            <td>{{ studentDetails.admissionNumber }}</td>
           </tr>
           <tr>
             <td>Class</td>
@@ -20,11 +20,11 @@
 
   <section class="trend">
     <h2>Performance Trend</h2>
-    <app-chart [performanceData]="exam.student_performance_over_time"></app-chart>
+    <app-chart [performanceData]="studentDetails.performanceOvertime"></app-chart>
   </section>
 
   <section class="exam">
-    <h2>{{ exam.exam_name }}</h2>
+    <h2>{{ studentDetails.examName }}</h2>
 
     <div class="exam__top">
       <div class="exam__info">
@@ -38,32 +38,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="!!streamInfo">
+            <tr *ngIf="!!studentDetails.streamPosition">
               <td class="c-text--left">Stream</td>
-              <td>{{ streamInfo?.rank }}</td>
-              <td>{{ streamInfo?.outOf }}</td>
+              <td>{{ studentDetails.streamPosition?.position }}</td>
+              <td>{{ studentDetails.streamPosition?.positionOutOf }}</td>
               <td>
-                <app-deviation [deviation]="streamInfo.deviation"></app-deviation>
+                <app-deviation [deviation]="studentDetails.streamPosition.deviation"></app-deviation>
               </td>
             </tr>
-            <tr *ngIf="!!overallInfo">
+            <tr *ngIf="!!studentDetails.overallPosition">
               <td class="c-text--left">Overall</td>
-              <td>{{ overallInfo?.rank }}</td>
-              <td>{{ overallInfo?.outOf }}</td>
+              <td>{{ studentDetails.overallPosition?.position }}</td>
+              <td>{{ studentDetails.overallPosition?.positionOutOf }}</td>
               <td>
-                <app-deviation [deviation]="overallInfo.deviation"></app-deviation>
+                <app-deviation [deviation]="studentDetails.overallPosition.deviation"></app-deviation>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <mat-card class="exam__performance-card grade-{{ getClassFromGrade(exam.mean_grade) }}">
+        <mat-card class="exam__performance-card grade-{{ getClassFromGrade(studentDetails.meanGrade) }}">
           <mat-card-content>
             <div class="container">
-              <p>{{ exam.mean_grade }}</p>
+              <p>{{ studentDetails.meanGrade }}</p>
               <div class="meta">
-                <span>{{ exam.mean_marks.avg_score }} points</span>
-                <app-deviation [deviation]="exam.mean_marks.deviation"></app-deviation>
+                <span>{{ studentDetails.meanMark?.avgScore }} points</span>
+                <app-deviation [deviation]="studentDetails.meanMark ? studentDetails.meanMark.deviation: 0"></app-deviation>
               </div>
             </div>
           </mat-card-content>
@@ -75,10 +75,10 @@
           <mat-card-title>Remarks</mat-card-title>
 
           <h3>Class Teacher</h3>
-          <p>{{ exam.class_teachers_remarks }}</p>
+          <p>{{ studentDetails.classTeacherRemarks }}</p>
 
           <h3>Principal</h3>
-          <p>{{ exam.principals_remarks }}</p>
+          <p>{{ studentDetails.principalRemarks }}</p>
         </mat-card-content>
       </mat-card>
     </div>
@@ -98,20 +98,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let subject of exam.subject_results; index as i">
-            <td class="c-text--left">{{ subject.subject_name }}</td>
-            <td>{{ subject.score }}</td>
+          <tr *ngFor="let subjectResult of studentDetails.subjectResults; index as i">
+            <td class="c-text--left">{{ subjectResult.name }}</td>
+            <td>{{ subjectResult.score }}</td>
             <td>
-              <div class="grade grade-{{ getClassFromGrade(subject.grade) }}">
-                {{ subject.grade }}
+              <div class="grade grade-{{ getClassFromGrade(subjectResult.grade) }}">
+                {{ subjectResult.grade }}
               </div>
             </td>
-            <td>{{ subject.rank }}</td>
-            <td>{{ subject.rank_out_of }}</td>
+            <td>{{ subjectResult.rank }}</td>
+            <td>{{ subjectResult.rankOutOf }}</td>
             <td>
-              <app-deviation [deviation]="subject.deviation"></app-deviation>
+              <app-deviation [deviation]="subjectResult.deviation ?? 0"></app-deviation>
             </td>
-            <td class="c-text--left">{{ subject.comment }}</td>
+            <td class="c-text--left">{{ subjectResult.comments }}</td>
           </tr>
         </tbody>
       </table>

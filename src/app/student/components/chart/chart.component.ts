@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core'
 import { ChartDataset, ChartOptions } from 'chart.js'
+import PerformanceOvertime from '../../models/performance-overtime.model'
 
 @Component({
   selector: 'app-chart',
@@ -7,22 +8,22 @@ import { ChartDataset, ChartOptions } from 'chart.js'
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent {
-  @Input() performanceData!: { exam_name: string, avg_score: number }[]
+  @Input() performanceData!: PerformanceOvertime[];
 
   get datasets(): ChartDataset[] {
     return [{
-      data: this.performanceData.map(datum => datum.avg_score),
+      data: this.performanceData.map(datum => datum.avgScore),
       label: ''
     }]
   }
 
   get labels(): string[][] {
     return this.performanceData.map(datum => {
-      const exam_name_split = datum.exam_name.split('-')
+      const examNameSplit = datum.examName.split('-')
 
       return [
-        `${exam_name_split[0]} - ${exam_name_split[1]}`,
-        exam_name_split[exam_name_split.length - 1]
+        `${examNameSplit[0]} - ${examNameSplit[1]}`,
+        examNameSplit[examNameSplit.length - 1]
       ]
     })
   }

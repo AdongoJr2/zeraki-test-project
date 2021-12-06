@@ -1,10 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import StudentFacade from './facades/student.facade';
 
-import { IStudent, IExam } from './interfaces'
-import { StudentService } from './services/student.service'
-
+import Student from './models/student.model';
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
@@ -28,58 +27,25 @@ import { StudentService } from './services/student.service'
   ],
 })
 export class StudentComponent implements OnInit, OnDestroy {
-  studentSub!: Subscription;
-  student$!: Observable<IExam>;
-  exam?: IExam;
+  studentSubscription!: Subscription;
+  studentDetails?: Student;
 
-  constructor(private studentsService: StudentService) { }
+  constructor(
+    public studentFacade: StudentFacade,
+  ) { }
 
   ngOnInit() {
-    this.studentSub = this.studentsService.fetchExam()
-      .subscribe((data) => {
-        this.exam = data;
+    this.studentSubscription = this.studentFacade.student$
+      .subscribe((data: Student) => {
+        this.studentDetails = data;
       });
   }
 
   ngOnDestroy() {
-    this.studentSub.unsubscribe();
+    this.studentSubscription.unsubscribe();
   }
 
-  get student(): IStudent | undefined {
-    const exam = this.exam
-
-    if (!exam) return
-
-    return {
-      name: exam.student_name,
-      admNo: exam.student_admission_number,
-      photo: exam.student_photo,
-    }
-  }
-
-  get streamInfo() {
-    if (!this.exam) return
-
-    const info = this.exam.stream_position
-    return {
-      rank: info.position,
-      outOf: info.position_out_of,
-      deviation: info.deviation,
-    }
-  }
-
-  get overallInfo() {
-    if (!this.exam) return
-
-    const info = this.exam.overall_position
-    return {
-      rank: info.position,
-      outOf: info.position_out_of,
-      deviation: info.deviation,
-    }
-  }
-
-  getClassFromGrade(grade: string): string {
-    return grade.replace(/-|\+/, '').toLowerCase()
+  getClassFromGrade(grade: string | null): string {
+    return grade ? grade.replace(/-|\+/, '').toLowerCase() : 'N/A';
   }
 }
